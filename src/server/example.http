@@ -1,0 +1,15 @@
+### Get data
+GET http://localhost:3000/api/data
+
+
+### Update data
+PUT http://localhost:3000/api/data
+Content-Type: application/json
+
+{
+  "name": "name value",
+  "displayName": "display name value"
+}
+
+### Delete data
+DELETE http://localhost:3000/api/data/foo
