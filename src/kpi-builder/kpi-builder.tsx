@@ -4,7 +4,7 @@ import "./kpi-builder.css";
 import type { Token } from "moo";
 import { Data } from "@/kpi-builder/data.types.ts";
 import { validateTokens } from "@/kpi-builder/kpi-validator.ts";
-import { getLexer } from "@/kpi-builder/lexer.ts";
+import { getLexer, TokenType } from "@/kpi-builder/lexer.ts";
 import {
   Card,
   CardContent,
@@ -95,8 +95,9 @@ export default function KpiBuilder() {
                         if (lexer.current) {
                           lexer.current.reset(formulaText);
                           const t = [...lexer.current];
-                          setTokens(t);
                           const err = validateTokens(t);
+
+                          setTokens(t);
                           setErrors(err);
                         }
                       }}
@@ -106,24 +107,25 @@ export default function KpiBuilder() {
                     />
                   </div>
                 )}
-                {isEditMode && lastToken?.type === "keyword-prediction" && (
-                  <div>
-                    {dataVariables
-                      .filter((keyword) =>
-                        keyword.name.toLowerCase().includes(lastToken.value),
-                      )
-                      .map((keyword) => (
-                        <p key={keyword.name} className={"suggestion"}>
-                          <span className={"technical-name"}>
-                            {keyword.name}
-                          </span>
-                          <span className={"display-name"}>
-                            {keyword.displayName}
-                          </span>
-                        </p>
-                      ))}
-                  </div>
-                )}
+                {isEditMode &&
+                  lastToken?.type === TokenType.KEYWORD_PREDICTION && (
+                    <div>
+                      {dataVariables
+                        .filter((keyword) =>
+                          keyword.name.toLowerCase().includes(lastToken.value),
+                        )
+                        .map((keyword) => (
+                          <p key={keyword.name} className={"suggestion"}>
+                            <span className={"technical-name"}>
+                              {keyword.name}
+                            </span>
+                            <span className={"display-name"}>
+                              {keyword.displayName}
+                            </span>
+                          </p>
+                        ))}
+                    </div>
+                  )}
               </div>
             </div>
           </CardContent>
